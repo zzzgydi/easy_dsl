@@ -5,15 +5,12 @@ import 'package:analyzer/dart/analysis/utilities.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
 
-class DivUsageGenerator2 extends Generator {
+class DivUsageGenerator extends Generator {
   @override
   Future<String?> generate(LibraryReader library, BuildStep buildStep) async {
     final StringBuffer output = StringBuffer();
 
     final code = library.element.source.contents.data;
-
-    // print("code: $code");
-    // 解析 Dart 代码
     final result = parseString(
         content: code, featureSet: FeatureSet.latestLanguageVersion());
     var visitor = DivVisitor();
@@ -23,6 +20,10 @@ class DivUsageGenerator2 extends Generator {
     for (var className in visitor.foundClassNames) {
       print(
         "[WARNING] ==================================== Found Div with className: $className",
+      );
+
+      output.writeln(
+        "// [className]: $className",
       );
     }
     return output.toString();

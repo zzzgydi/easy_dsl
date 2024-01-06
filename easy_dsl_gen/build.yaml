@@ -1,8 +1,19 @@
 builders:
-  easy_1:
+  easy_gen:
     import: "package:easy_dsl_gen/easy_dsl_gen.dart"
     builder_factories: ["easyBuilder"]
     build_extensions: { ".dart": [".g.part"] }
+    # build_extensions: { ".dart": ["_e.g.dart"] }
     auto_apply: dependents
     build_to: cache
-    applies_builders: ["source_gen|combining_builder"]
+    applies_builders: ["easy_combine"]
+
+  easy_combine:
+    import: "package:easy_dsl_gen/easy_dsl_gen.dart"
+    builder_factories: ["combineBuilder"]
+    build_extensions: { ".easy.g.part": [".g.part"] }
+    auto_apply: dependents
+    build_to: source
+    # defaults:
+    #   generate_for: { include: ["**.easy.g.part"] }
+    # applies_builders: ["source_gen|combining_builder"]

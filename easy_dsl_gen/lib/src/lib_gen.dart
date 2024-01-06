@@ -18,8 +18,8 @@ Iterable<TopLevelVariableElement> topLevelNumVariables(LibraryReader reader) =>
 class MemberCountLibraryGenerator extends Generator {
   @override
   String? generate(LibraryReader library, BuildStep buildStep) {
-    print('Generating for ${library.element.source.uri}');
-    print('buildStep ${buildStep}');
+    print(
+        '====================== [MemberCountLibraryGenerator] Generating for ${library.element.source.uri}');
 
     final topLevelVarCount = topLevelNumVariables(library).length;
 
