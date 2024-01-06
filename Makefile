@@ -7,4 +7,4 @@ prepare:
 
 test:
 	cd example && dart run build_runner clean
-	cd example && dart run build_runner build
+	cd example && dart run build_runner build -d --no-track-performance
