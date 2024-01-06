@@ -10,7 +10,6 @@ class DivUsageGenerator2 extends Generator {
   Future<String?> generate(LibraryReader library, BuildStep buildStep) async {
     final StringBuffer output = StringBuffer();
 
-    print("source: ${library.element.source.uri}");
     final code = library.element.source.contents.data;
 
     // print("code: $code");
@@ -30,49 +29,45 @@ class DivUsageGenerator2 extends Generator {
   }
 }
 
-class DivVisitor extends RecursiveAstVisitor<void> {
+class DivVisitor extends GeneralizingAstVisitor<void> {
   final foundClassNames = <String>[];
 
   @override
-  void visitInstanceCreationExpression(InstanceCreationExpression node) {
-    final nodeName = node.constructorName.type.toSource();
+  void visitNode(AstNode node) {
+    // print("visitNode: ${node.runtimeType.toString()} ${node.toSource()}");
 
-    print(
-      "[WARNING] ==================================== Creation: $nodeName",
-    );
+    if (node is InstanceCreationExpression) {
+      final nodeName = node.constructorName.type.toSource();
 
-    if (nodeName == 'Div') {
-      var arguments = node.argumentList.arguments;
-      for (var arg in arguments) {
-        if (arg is NamedExpression && arg.name.label.name == 'className') {
-          var value = arg.expression;
-          if (value is StringLiteral) {
-            foundClassNames.add(value.stringValue!);
-          }
-        }
-      }
-    }
-  }
-
-  @override
-  void visitMethodInvocation(MethodInvocation node) {
-    final nodeName = node.methodName.toString();
-    print(
-      "[WARNING] ==================================== MethodInvocation: $nodeName",
-    );
-
-    if (nodeName == 'Div') {
-      var arguments = node.argumentList.arguments;
-      for (var arg in arguments) {
-        if (arg is NamedExpression && arg.name.label.name == 'className') {
-          var value = arg.expression;
-          if (value is StringLiteral) {
-            foundClassNames.add(value.stringValue!);
+      if (nodeName == 'Div') {
+        var arguments = node.argumentList.arguments;
+        for (var arg in arguments) {
+          if (arg is NamedExpression && arg.name.label.name == 'className') {
+            var value = arg.expression;
+            if (value is StringLiteral) {
+              foundClassNames.add(value.stringValue!);
+            }
           }
         }
       }
     }
 
-    super.visitMethodInvocation(node);
+    if (node is MethodInvocation) {
+      final nodeName = node.methodName.name;
+      if (nodeName == 'Div') {
+        var arguments = node.argumentList.arguments;
+        for (var arg in arguments) {
+          if (arg is NamedExpression && arg.name.label.name == 'className') {
+            var value = arg.expression;
+            if (value is StringLiteral) {
+              foundClassNames.add(value.stringValue!);
+            }
+          }
+        }
+      }
+    }
+
+    // 继续遍历 AST
+    super.visitNode(node);
   }
 }
