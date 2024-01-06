@@ -35,8 +35,6 @@ class DivVisitor extends GeneralizingAstVisitor<void> {
 
   @override
   void visitNode(AstNode node) {
-    // print("visitNode: ${node.runtimeType.toString()} ${node.toSource()}");
-
     if (node is InstanceCreationExpression) {
       final nodeName = node.constructorName.type.toSource();
 
@@ -51,9 +49,7 @@ class DivVisitor extends GeneralizingAstVisitor<void> {
           }
         }
       }
-    }
-
-    if (node is MethodInvocation) {
+    } else if (node is MethodInvocation) {
       final nodeName = node.methodName.name;
       if (nodeName == 'Div') {
         var arguments = node.argumentList.arguments;

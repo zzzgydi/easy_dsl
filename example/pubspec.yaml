@@ -13,6 +13,8 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
+  easy_dsl:
+    path: ../easy_dsl/
 
 dev_dependencies:
   flutter_test:

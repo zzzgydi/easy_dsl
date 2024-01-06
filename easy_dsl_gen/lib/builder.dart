@@ -3,6 +3,7 @@ import 'package:source_gen/source_gen.dart';
 
 import 'src/combine_gen.dart';
 import 'src/custom_builder.dart';
+import 'src/custom_combine_builder.dart';
 import 'src/div_gen.dart';
 import 'src/lib_gen.dart';
 

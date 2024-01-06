@@ -1,6 +1,9 @@
 import 'package:build/build.dart';
+import 'package:easy_dsl/easy_dsl.dart';
+import 'package:source_gen/source_gen.dart';
 
-/// A really simple [Builder], it just makes copies of .txt files!
+import 'div_gen.dart';
+
 class CustomBuilder implements Builder {
   @override
   final buildExtensions = const {
@@ -9,42 +12,63 @@ class CustomBuilder implements Builder {
 
   @override
   Future<void> build(BuildStep buildStep) async {
-    // Each `buildStep` has a single input.
-    var inputId = buildStep.inputId;
-
+    final inputId = buildStep.inputId;
     final outputId = buildStep.allowedOutputs.single;
-    log.warning("build: ${inputId.path}, outputId: ${outputId.path}");
 
-    // final a = await buildStep.resolver.libraryFor(inputId);
+    if (inputId.path.endsWith(".easy.g.dart")) {
+      return;
+    }
 
-    var contents = await buildStep.readAsString(inputId);
+    final StringBuffer output = StringBuffer();
 
-    // log.info("\n$contents");
+    // log.warning("build: ${inputId.path}, outputId: ${outputId.path}");
 
-    // Write out the new asset.
-    await buildStep.writeAsString(outputId, contents);
-  }
-}
+    final ele = await buildStep.resolver.libraryFor(buildStep.inputId);
 
-class CustomCombineBuilder implements Builder {
-  @override
-  final buildExtensions = const {
-    '.dart': ['.easy.g.dart']
-  };
+    final allElements = [...ele.topLevelElements];
+    // ...ele.parts,
+    // ...ele.units,
 
-  @override
-  Future<void> build(BuildStep buildStep) async {
-    // Each `buildStep` has a single input.
-    var inputId = buildStep.inputId;
+    for (final element in allElements) {
+      final ast = await buildStep.resolver.astNodeFor(element);
+      if (ast == null) {
+        continue;
+      }
 
-    final outputId = buildStep.allowedOutputs.single;
-    log.warning("[Combine] build: ${inputId.path}, outputId: ${outputId.path}");
+      final visitor = DivVisitor();
+      ast.visitChildren(visitor);
 
-    var contents = await buildStep.readAsString(inputId);
+      // 输出所有找到的 className 值
+      for (var className in visitor.foundClassNames) {
+        print(
+          "[WARNING] ==================================== "
+          "Found Div with className: $className",
+        );
 
-    // log.info("\n$contents");
+        output.writeln("// [className]: $className");
+      }
+    }
 
-    // Write out the new asset.
-    await buildStep.writeAsString(outputId, contents);
+    final allElements2 = [
+      ele,
+      ...ele.topLevelElements,
+      ...ele.libraryImports,
+      ...ele.libraryExports,
+      ...ele.parts,
+    ];
+    TypeChecker typeChecker = TypeChecker.fromRuntime(EasyDSL);
+
+    for (final element in allElements2) {
+      final anno = typeChecker.firstAnnotationOf(element);
+      if (anno != null) {
+        print("[WARNING] ==================================== "
+            "uri: ${element.source?.uri} "
+            "${anno}");
+
+        output.writeln("// [element]: $element");
+      }
+    }
+
+    await buildStep.writeAsString(outputId, output.toString());
   }
 }
