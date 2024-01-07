@@ -2,24 +2,27 @@ import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
 import 'package:analyzer/dart/element/element.dart';
 
-class DivVisitor extends GeneralizingAstVisitor<void> {
+class ClassNameVisitor extends GeneralizingAstVisitor<void> {
+  ClassNameVisitor({this.nodeName = "Div"});
+
+  final String nodeName;
   final foundClassNames = <String>[];
 
   @override
   void visitNode(AstNode node) {
     if (node is InstanceCreationExpression) {
-      final nodeName = node.constructorName.type.toSource();
-      _findDivAndClassName(nodeName, node.argumentList.arguments);
+      final curNodeName = node.constructorName.type.toSource();
+      _findDivAndClassName(curNodeName, node.argumentList.arguments);
     } else if (node is MethodInvocation) {
-      final nodeName = node.methodName.name;
-      _findDivAndClassName(nodeName, node.argumentList.arguments);
+      final curNodeName = node.methodName.name;
+      _findDivAndClassName(curNodeName, node.argumentList.arguments);
     }
 
     super.visitNode(node);
   }
 
-  void _findDivAndClassName(String nodeName, NodeList<Expression> arguments) {
-    if (nodeName != 'Div') {
+  void _findDivAndClassName(String curNode, NodeList<Expression> arguments) {
+    if (curNode != nodeName) {
       return;
     }
 

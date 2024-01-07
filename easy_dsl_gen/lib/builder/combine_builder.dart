@@ -1,7 +1,7 @@
 import 'package:build/build.dart';
 import 'package:glob/glob.dart';
 
-class CustomCombineBuilder implements Builder {
+class EasyCombineBuilder implements Builder {
   @override
   final buildExtensions = const {
     '.easy': ['.easy.g.dart']

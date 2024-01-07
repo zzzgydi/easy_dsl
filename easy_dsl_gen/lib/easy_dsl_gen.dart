@@ -1,6 +1,10 @@
-/// Support for doing something awesome.
-///
-/// More dartdocs go here.
 library easy_dsl_gen;
 
-export "builder.dart";
+import 'package:build/build.dart';
+
+import 'builder/combine_builder.dart';
+import 'builder/part_builder.dart';
+
+Builder easyPartBuilder(BuilderOptions options) => EasyPartBuilder();
+
+Builder easyCombineBuilder(BuilderOptions options) => EasyCombineBuilder();

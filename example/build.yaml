@@ -1,6 +1,6 @@
 targets:
   $default:
     builders:
-      easy_dsl_gen|easy_custom_before:
+      easy_dsl_gen|easy_gen:
         generate_for:
           - lib/**.dart

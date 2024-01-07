@@ -2,9 +2,9 @@ import 'package:build/build.dart';
 import 'package:easy_dsl/easy_dsl.dart';
 import 'package:source_gen/source_gen.dart';
 
-import 'visitor.dart';
+import '../visitor/classname_visitor.dart';
 
-class CustomBuilder implements Builder {
+class EasyPartBuilder implements Builder {
   @override
   final buildExtensions = const {
     '.dart': ['.easy']
@@ -24,7 +24,7 @@ class CustomBuilder implements Builder {
     // log.warning("build: ${inputId.path}, outputId: ${outputId.path}");
 
     final ele = await buildStep.resolver.libraryFor(buildStep.inputId);
-    final visitor = DivVisitor();
+    final visitor = ClassNameVisitor(nodeName: "Div");
 
     await Future.wait(
       ele.topLevelElements.map((e) async {
@@ -36,11 +36,12 @@ class CustomBuilder implements Builder {
       }),
     );
 
-    // 输出所有找到的 className 值
+    // Find all className constants
     for (var className in visitor.foundClassNames) {
       output.writeln("// [className]: $className");
     }
 
+    /// Find the EasyDSL annotation
     final allElements = [
       ele,
       ...ele.topLevelElements,

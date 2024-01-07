@@ -1,37 +1,16 @@
 builders:
-  # easy_gen:
-  #   import: "package:easy_dsl_gen/easy_dsl_gen.dart"
-  #   builder_factories: ["easyBuilder"]
-  #   build_extensions: { ".dart": [".g.part"] }
-  #   # build_extensions: { ".dart": ["_e.g.dart"] }
-  #   auto_apply: dependents
-  #   build_to: cache
-  #   applies_builders: ["easy_combine"]
-
-  # easy_combine:
-  #   import: "package:easy_dsl_gen/easy_dsl_gen.dart"
-  #   builder_factories: ["combineBuilder"]
-  #   build_extensions: { ".easy.g.part": [".g.part"] }
-  #   auto_apply: dependents
-  #   build_to: source
-  #   # defaults:
-  #   #   generate_for: { include: ["**.easy.g.part"] }
-  #   # applies_builders: ["source_gen|combining_builder"]
-
-  easy_custom_before:
+  easy_gen:
     import: "package:easy_dsl_gen/easy_dsl_gen.dart"
-    builder_factories: ["customBuilder"]
+    builder_factories: ["easyPartBuilder"]
     build_extensions: { ".dart": [".easy"] }
     auto_apply: dependents
     build_to: cache
-    # runs_before: ["easy_custom"]
-    applies_builders: ["|easy_custom"]
+    applies_builders: ["|easy_combine"]
 
-  easy_custom:
+  easy_combine:
     import: "package:easy_dsl_gen/easy_dsl_gen.dart"
-    builder_factories: ["customCombineBuilder"]
+    builder_factories: ["easyCombineBuilder"]
     build_extensions: { ".easy": [".easy.g.dart"] }
-    # auto_apply: root_package
     build_to: source
     # applies_builders: ["easy_dsl_gen|custom_cleanup"]
 # post_process_builders:
