@@ -34,8 +34,7 @@ builders:
     # auto_apply: root_package
     build_to: source
     # applies_builders: ["easy_dsl_gen|custom_cleanup"]
-
-post_process_builders:
-  custom_cleanup:
-    import: "package:easy_dsl_gen/easy_dsl_gen.dart"
-    builder_factory: "customCleanup"
+# post_process_builders:
+#   custom_cleanup:
+#     import: "package:easy_dsl_gen/easy_dsl_gen.dart"
+#     builder_factory: "customCleanup"

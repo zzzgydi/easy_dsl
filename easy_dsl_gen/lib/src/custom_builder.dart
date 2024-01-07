@@ -2,7 +2,7 @@ import 'package:build/build.dart';
 import 'package:easy_dsl/easy_dsl.dart';
 import 'package:source_gen/source_gen.dart';
 
-import 'div_gen.dart';
+import 'visitor.dart';
 
 class CustomBuilder implements Builder {
   @override
@@ -24,48 +24,37 @@ class CustomBuilder implements Builder {
     // log.warning("build: ${inputId.path}, outputId: ${outputId.path}");
 
     final ele = await buildStep.resolver.libraryFor(buildStep.inputId);
+    final visitor = DivVisitor();
 
-    final allElements = [...ele.topLevelElements];
-    // ...ele.parts,
-    // ...ele.units,
+    await Future.wait(
+      ele.topLevelElements.map((e) async {
+        final ast = await buildStep.resolver.astNodeFor(e, resolve: true);
+        if (ast == null) {
+          return;
+        }
+        ast.visitChildren(visitor);
+      }),
+    );
 
-    for (final element in allElements) {
-      final ast = await buildStep.resolver.astNodeFor(element);
-      if (ast == null) {
-        continue;
-      }
-
-      final visitor = DivVisitor();
-      ast.visitChildren(visitor);
-
-      // 输出所有找到的 className 值
-      for (var className in visitor.foundClassNames) {
-        print(
-          "[WARNING] ==================================== "
-          "Found Div with className: $className",
-        );
-
-        output.writeln("// [className]: $className");
-      }
+    // 输出所有找到的 className 值
+    for (var className in visitor.foundClassNames) {
+      output.writeln("// [className]: $className");
     }
 
-    final allElements2 = [
+    final allElements = [
       ele,
       ...ele.topLevelElements,
       ...ele.libraryImports,
       ...ele.libraryExports,
       ...ele.parts,
     ];
+
     TypeChecker typeChecker = TypeChecker.fromRuntime(EasyDSL);
 
-    for (final element in allElements2) {
+    for (final element in allElements) {
       final anno = typeChecker.firstAnnotationOf(element);
       if (anno != null) {
-        print("[WARNING] ==================================== "
-            "uri: ${element.source?.uri} "
-            "${anno}");
-
-        output.writeln("// [element]: $element");
+        output.writeln("// [element]: ${anno.type}");
       }
     }
 

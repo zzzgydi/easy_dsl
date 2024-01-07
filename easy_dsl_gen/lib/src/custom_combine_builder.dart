@@ -1,6 +1,5 @@
 import 'package:build/build.dart';
 import 'package:glob/glob.dart';
-import 'package:path/path.dart' as p;
 
 class CustomCombineBuilder implements Builder {
   @override
@@ -17,21 +16,19 @@ class CustomCombineBuilder implements Builder {
 
     var contents = await buildStep.readAsString(inputId);
 
-    if (!contents.contains("// [element]:")) {
+    if (!contents.contains("// [element]: EasyDSL")) {
       return;
     }
-
-    // final pattern = buildStep.inputId.changeExtension('*.easy').path;
 
     final assetIds = await buildStep.findAssets(Glob("**/*.easy")).toList()
       ..sort();
 
-    log.warning("[Combine] build: ${inputId.path}, outputId: ${outputId.path}, "
-        "assets: ${assetIds.map((e) => e.path).join("\n")}");
+    final StringBuffer output = StringBuffer();
+    for (var assetId in assetIds) {
+      final content = await buildStep.readAsString(assetId);
+      output.writeln(content);
+    }
 
-    // log.info("\n$contents");
-
-    // Write out the new asset.
-    await buildStep.writeAsString(outputId, contents);
+    await buildStep.writeAsString(outputId, output.toString());
   }
 }
