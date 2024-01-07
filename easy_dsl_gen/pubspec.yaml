@@ -13,6 +13,8 @@ dependencies:
   source_gen: ^1.5.0
   glob: ^2.1.2
   path: ^1.8.0
+  code_builder: ^4.9.0
+  dart_style: ^2.3.4
   easy_dsl:
     path: ../easy_dsl/
 
