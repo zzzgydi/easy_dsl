@@ -41,10 +41,10 @@ class ClsGenerator {
 
     final widgetCode = widgetList.join("\n\n");
 
-    return formatter.format("${_genBuiltinImplCode()}\n\n"
-        "$widgetCode\n\n"
-        "${_genMapCode(outMap)}\n\n"
-        "${_genDivCode(constructorList)}");
+    return formatter.format("${_genMapCode(outMap)}\n\n"
+        "${_genDivCode(constructorList)}"
+        "${_genBuiltinImplCode()}\n\n"
+        "$widgetCode\n\n");
   }
 
   String _genMapCode(Map<String, String> map) {
