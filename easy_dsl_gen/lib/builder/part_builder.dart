@@ -15,7 +15,7 @@ class EasyPartBuilder implements Builder {
     final inputId = buildStep.inputId;
     final outputId = buildStep.allowedOutputs.single;
 
-    if (inputId.path.endsWith(".easy.g.dart")) {
+    if (inputId.path.endsWith(".g.dart")) {
       return;
     }
 
