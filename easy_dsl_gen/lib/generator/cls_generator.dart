@@ -31,7 +31,7 @@ class ClsGenerator {
 
     var index = 1;
     taskMap.forEach((key, value) {
-      final constructor = "\$DIV${index++}";
+      final constructor = "\$Div${index++}";
       final item = value.first;
       widgetList.add(WidgetGenerator(item, constructor).generate());
       constructorList.add(constructor);

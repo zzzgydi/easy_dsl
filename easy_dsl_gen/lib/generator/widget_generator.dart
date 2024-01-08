@@ -1,4 +1,5 @@
 import 'cls_item.dart';
+import 'code/code_gen.dart';
 import 'iter/iter.dart';
 
 class WidgetGenerator {
@@ -12,34 +13,36 @@ class WidgetGenerator {
     final bgIter = BackgroundIter();
     final borderIter = BorderIter();
     final paddingIter = PaddingIter();
+    final marginIter = MarginIter();
 
     for (var cls in clsItem.clsSet) {
       boxIter.iter(cls);
       bgIter.iter(cls);
       borderIter.iter(cls);
       paddingIter.iter(cls);
+      marginIter.iter(cls);
     }
 
-    var widget = boxIter.generate();
+    var current = boxIter.generate();
+
     final background = bgIter.generate();
     final border = borderIter.generate();
     final padding = paddingIter.generate();
+    final margin = marginIter.generate();
 
-    if (background != null || border != null || padding != null) {
-      final o = StringBuffer();
-      o.writeln("Container(");
-      if (padding != null) {
-        o.writeln("padding: $padding,");
-      }
-      if (background != null || border != null) {
-        o.writeln("decoration: BoxDecoration(");
-        if (background != null) o.writeln("color: $background,");
-        if (border != null) o.writeln("border: $border,");
-        o.writeln("),");
-      }
-      o.writeln("child: $widget,");
-      o.writeln(")");
-      widget = o.toString();
+    final container = CodeConstrutor("Container")
+      ..add("margin", margin)
+      ..add("padding", padding)
+      ..add(
+          "decoration",
+          (CodeConstrutor("BoxDecoration")
+                ..add("color", background)
+                ..add("border", border))
+              .maybeGenerate());
+
+    if (container.hasFields()) {
+      container.add("child", current);
+      current = container.generate();
     }
 
     return "class $constructor extends EasyDivImpl {\n"
@@ -49,26 +52,8 @@ class WidgetGenerator {
         "  });\n"
         "  @override\n"
         "  Widget build(BuildContext context) {\n"
-        "    return $widget;\n"
+        "    return $current;\n"
         "  }\n"
         "}";
   }
-
-  // bool has(String cls) {
-  //   return clsItem.clsSet.contains(cls);
-  // }
-
-  // bool not(String cls) {
-  //   return !clsItem.clsSet.contains(cls);
-  // }
-
-  // String choose(Map<String, String> map, String defaultValue) {
-  //   var out = defaultValue;
-  //   for (var key in map.keys) {
-  //     if (clsItem.clsSet.contains(key)) {
-  //       out = map[key]!;
-  //     }
-  //   }
-  //   return out;
-  // }
 }

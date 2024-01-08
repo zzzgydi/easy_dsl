@@ -173,6 +173,6 @@ class BorderIter extends AttrIter {
           "bottom: BorderSide(color: $bColor, width: $bWidth, style: $bStyle),\n");
     }
 
-    return "Border(\n${sides.join()})";
+    return "Border(${sides.join()})";
   }
 }

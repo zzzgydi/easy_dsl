@@ -1,4 +1,5 @@
 import 'attr.dart';
+import '../code/code_gen.dart';
 
 class BoxIter extends AttrIter {
   String _box = "Column";
@@ -130,20 +131,20 @@ class BoxIter extends AttrIter {
   @override
   String? generate() {
     if (_box == "Stack") {
-      return "$_box(\n"
-          "  fit: $_stackFit,\n"
-          "  clipBehavior: $_stackClip,\n"
-          "  alignment: $_stackAlign,\n"
-          "${_stackDirection == null ? "" : "  textDirection: $_stackDirection,\n"}"
-          "  children: children,\n"
-          ")";
+      return (CodeConstrutor(_box)
+            ..add("fit", _stackFit)
+            ..add("clipBehavior", _stackClip)
+            ..add("alignment", _stackAlign)
+            ..add("textDirection", _stackDirection)
+            ..add("children", "children"))
+          .generate();
     }
 
-    return "$_box(\n"
-        "  mainAxisSize: $_size,\n"
-        "  mainAxisAlignment: $_align,\n"
-        "  crossAxisAlignment: $_cross,\n"
-        "  children: children,\n"
-        ")";
+    return (CodeConstrutor(_box)
+          ..add("mainAxisSize", _size)
+          ..add("mainAxisAlignment", _align)
+          ..add("crossAxisAlignment", _cross)
+          ..add("children", "children"))
+        .generate();
   }
 }
