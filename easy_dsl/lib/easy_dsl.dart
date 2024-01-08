@@ -4,4 +4,5 @@
 library easy_dsl;
 
 export 'annotations.dart';
-export 'options.dart';
+export 'src/options.dart';
+export 'src/div_impl.dart';

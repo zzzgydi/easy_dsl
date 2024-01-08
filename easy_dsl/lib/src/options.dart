@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-const _defaultSpacing = <String, double>{
+const defaultSpacing = <String, double>{
   "px": 1,
   "0": 0,
   "0.5": 0.5,
@@ -38,7 +38,7 @@ const _defaultSpacing = <String, double>{
   "96": 384,
 };
 
-const _defaultColor = <String, Color>{
+const defaultColor = <String, Color>{
   "transparent": Color(0x00000000),
   "current": Color(0xFF000000),
   "black": Color(0xFF000000),
@@ -82,11 +82,11 @@ class EasyOption {
   final Map<String, Color> color;
 
   const EasyOption({
-    this.spacing = _defaultSpacing,
-    this.color = _defaultColor,
+    this.spacing = defaultSpacing,
+    this.color = defaultColor,
   });
 
   const EasyOption.empty()
-      : color = _defaultColor,
-        spacing = _defaultSpacing;
+      : color = defaultColor,
+        spacing = defaultSpacing;
 }
