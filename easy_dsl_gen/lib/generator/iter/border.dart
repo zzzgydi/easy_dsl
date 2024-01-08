@@ -8,11 +8,11 @@ class BorderIter extends AttrIter {
 
   @override
   void iter(String cls) {
-    final pattern = RegExp(r'^border(-[tlrbxy])?(-\d)?$');
+    final pattern = RegExp(r'^border(-[tlrbxy])?(-\d+)?$');
     if (pattern.hasMatch(cls)) {
       final match = pattern.firstMatch(cls)!;
       final side = match.group(1);
-      final width = match.group(2) ?? "1";
+      final width = (match.group(2) ?? "1").replaceFirst("-", '');
       switch (side) {
         case "-t":
           tWidth = width;
@@ -90,9 +90,10 @@ class BorderIter extends AttrIter {
       final match = pattern3.firstMatch(cls)!;
       final side = match.group(1);
       final color = match.group(2) ?? "current";
+      // TODO tranform colorV
       final cValue = (color.startsWith('[') && color.endsWith(']'))
-          ? "_colorV('$color')"
-          : "_color('$color')";
+          ? "colorV('$color')"
+          : "color('$color')";
 
       switch (side) {
         case "-t":
@@ -128,44 +129,35 @@ class BorderIter extends AttrIter {
 
   @override
   String? generate() {
-    if (tColor == null &&
-        tWidth == null &&
-        tStyle == null &&
-        lColor == null &&
-        lWidth == null &&
-        lStyle == null &&
-        rColor == null &&
-        rWidth == null &&
-        rStyle == null &&
-        bColor == null &&
-        bWidth == null &&
-        bStyle == null) {
+    /// must set border width
+    /// if not set, return null
+    if (tWidth == null && lWidth == null && rWidth == null && bWidth == null) {
       return null;
     }
 
     final List<String> sides = [];
-    if (tColor != null || tWidth != null || tStyle != null) {
+    if (tWidth != null) {
       tColor ??= "color('current')";
       tWidth ??= "1";
       tStyle ??= "BorderStyle.solid";
       sides.add(
           "top: BorderSide(color: $tColor, width: $tWidth, style: $tStyle),\n");
     }
-    if (lColor != null || lWidth != null || lStyle != null) {
+    if (lWidth != null) {
       lColor ??= "color('current')";
       lWidth ??= "1";
       lStyle ??= "BorderStyle.solid";
       sides.add(
           "left: BorderSide(color: $lColor, width: $lWidth, style: $lStyle),\n");
     }
-    if (rColor != null || rWidth != null || rStyle != null) {
+    if (rWidth != null) {
       rColor ??= "color('current')";
       rWidth ??= "1";
       rStyle ??= "BorderStyle.solid";
       sides.add(
           "right: BorderSide(color: $rColor, width: $rWidth, style: $rStyle),\n");
     }
-    if (bColor != null || bWidth != null || bStyle != null) {
+    if (bWidth != null) {
       bColor ??= "color('current')";
       bWidth ??= "1";
       bStyle ??= "BorderStyle.solid";

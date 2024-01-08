@@ -5,8 +5,6 @@ import 'div.dart';
 class Demo1Page extends StatelessWidget {
   const Demo1Page({super.key});
 
-  final String test = "";
-
   @override
   Widget build(BuildContext context) {
     const className = "items-center bg-black";
@@ -31,7 +29,7 @@ class Demo1Page extends StatelessWidget {
                 Text('Hello'),
                 SizedBox(width: 10),
                 Div(
-                  className: "bg-orange-100 p-2",
+                  className: "bg-orange-100 p-2 border-x-3 border-red-500",
                   children: [
                     Text('World'),
                   ],
