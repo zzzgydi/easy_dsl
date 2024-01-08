@@ -41,8 +41,10 @@ class ClsGenerator {
 
     final widgetCode = widgetList.join("\n\n");
 
-    return formatter.format(
-        "$widgetCode\n\n${_genMapCode(outMap)}\n\n${_genDivCode(constructorList)}");
+    return formatter.format("${_genBuiltinImplCode()}\n\n"
+        "$widgetCode\n\n"
+        "${_genMapCode(outMap)}\n\n"
+        "${_genDivCode(constructorList)}");
   }
 
   String _genMapCode(Map<String, String> map) {
@@ -79,5 +81,38 @@ class ClsGenerator {
         "    };\n"
         "  }\n"
         "}\n";
+  }
+
+  String _genBuiltinImplCode() {
+    return """
+class \$DivImpl extends StatelessWidget {
+  const \$DivImpl({
+    super.key,
+    required this.className,
+    required this.children,
+    required this.option,
+  });
+  final String className;
+  final EasyOption option;
+  final List<Widget> children;
+
+  double _spacing(String key) {
+    return option.spacing[key] ?? 0;
+  }
+
+  Color _color(String key) {
+    return option.color[key] ?? Colors.transparent;
+  }
+
+  // TODO
+  Color _colorV(String value) {
+    return Colors.black;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}""";
   }
 }
