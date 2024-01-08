@@ -61,7 +61,7 @@ class ClsGenerator {
         "  final List<Widget> children;\n\n"
         "  @override\n"
         "  Widget build(BuildContext context) {\n"
-        "    Type? type = _divMap[className];\n"
+        "    Type? type = _divMap[className.trim()];\n"
         "    if (type == null) return Column(children: children);\n"
         "    return switch (type) {\n"
         "$ret\n"
