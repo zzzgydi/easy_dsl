@@ -1,29 +1,9 @@
 import 'package:analyzer/dart/analysis/features.dart';
-import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/analysis/utilities.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
 
 void main() {
-  final code2 = """
-
-  class HomePage2 extends StatelessWidget {
-    const HomePage2({super.key});
-
-    @override
-    Widget build(BuildContext context) {
-      return const Column(
-        children: [
-          // Text('Hello'),
-
-          Div(className: "flex items-center222", children: [
-            Text('He'),
-          ])
-        ],
-      );
-    }
-  }
-""";
   // 替换为你的 Dart 文件路径
   var code = '''class HomePage extends StatelessWidget {
     const HomePage({super.key});
