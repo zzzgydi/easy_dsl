@@ -12,6 +12,16 @@ The project is currently under heavy development. Many Tailwind properties are y
 - Relies on code generation, ensuring zero runtime cost
 - Continuous development to expand DSL features
 
+## Installation
+
+Add these dependencies to `pubspec.yaml`.
+
+```yaml
+dependencies:
+  easy_dsl: ^0.0.1
+  easy_dsl_gen: ^0.0.1
+```
+
 ## Usage
 
 You must initially set the Widget's name as `Div`.
