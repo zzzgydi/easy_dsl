@@ -1,5 +1,5 @@
 import 'package:build/build.dart';
-import 'package:easy_dsl/easy_dsl.dart';
+import 'package:easy_dsl/annotations.dart';
 import 'package:source_gen/source_gen.dart';
 
 import '../visitor/classname_visitor.dart';

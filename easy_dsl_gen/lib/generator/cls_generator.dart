@@ -57,12 +57,17 @@ class ClsGenerator {
 
   String _genDivCode(List<String> constructorList) {
     final ret = constructorList
-        .map((c) => "      $c => $c(className: className, children: children),")
+        .map((c) =>
+            "      $c => $c(className: className, option: option, children: children),")
         .join("\n");
 
     return "class \$Div extends StatelessWidget {\n"
-        "  const \$Div({super.key, required this.className, required this.children});\n"
+        "  const \$Div({\n"
+        "   super.key, required this.className, required this.children,\n"
+        "   this.option = const EasyOption.empty(),\n"
+        "  });\n"
         "  final String className;\n"
+        "  final EasyOption option;\n"
         "  final List<Widget> children;\n\n"
         "  @override\n"
         "  Widget build(BuildContext context) {\n"

@@ -34,8 +34,12 @@ class WidgetGenerator {
         ")";
 
     return "class $constructor extends StatelessWidget {\n"
-        "  const $constructor({super.key, required this.className, required this.children});\n"
+        "  const $constructor({\n"
+        "    super.key, required this.className, required this.children,\n"
+        "    required this.option,\n"
+        "  });\n"
         "  final String className;\n"
+        "  final EasyOption option;\n"
         "  final List<Widget> children;\n\n"
         "  @override\n"
         "  Widget build(BuildContext context) {\n"

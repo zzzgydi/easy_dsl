@@ -3,4 +3,5 @@
 /// More dartdocs go here.
 library easy_dsl;
 
-export 'src/annotations.dart';
+export 'annotations.dart';
+export 'options.dart';
