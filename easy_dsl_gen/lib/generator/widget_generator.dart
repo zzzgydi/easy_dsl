@@ -11,20 +11,20 @@ class WidgetGenerator {
     final mainAxisSize = has("inline") || has("inline-block")
         ? "MainAxisSize.min"
         : "MainAxisSize.max";
-    final mainAxisAlignment = Case({
+    final mainAxisAlignment = choose({
       "justify-center": "MainAxisAlignment.center",
       "justify-end": "MainAxisAlignment.end",
       "justify-between": "MainAxisAlignment.spaceBetween",
       "justify-around": "MainAxisAlignment.spaceAround",
       "justify-evenly": "MainAxisAlignment.spaceEvenly",
-    }).run(clsItem.clsSet, "MainAxisAlignment.start");
-    final crossAxisAlignment = Case({
+    }, "MainAxisAlignment.start");
+    final crossAxisAlignment = choose({
       "items-start": "CrossAxisAlignment.start",
       "items-end": "CrossAxisAlignment.end",
       "items-center": "CrossAxisAlignment.center",
       "items-stretch": "CrossAxisAlignment.stretch",
       "items-baseline": "CrossAxisAlignment.baseline",
-    }).run(clsItem.clsSet, "CrossAxisAlignment.start");
+    }, "CrossAxisAlignment.start");
 
     final innerWidget = "$inner(\n"
         "  mainAxisSize: $mainAxisSize,\n"
@@ -51,17 +51,11 @@ class WidgetGenerator {
   bool not(String cls) {
     return !clsItem.clsSet.contains(cls);
   }
-}
 
-class Case {
-  const Case(this.map);
-
-  final Map<String, String> map;
-
-  String run(Set<String> clsSet, String defaultValue) {
+  String choose(Map<String, String> map, String defaultValue) {
     var out = defaultValue;
     for (var key in map.keys) {
-      if (clsSet.contains(key)) {
+      if (clsItem.clsSet.contains(key)) {
         out = map[key]!;
       }
     }
