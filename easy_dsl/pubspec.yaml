@@ -1,7 +1,13 @@
 name: easy_dsl
-description: A starting point for Dart libraries or applications.
-version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+version: 0.0.1
+description: Streamlining Flutter UI Development with DSL-Based Code Generation
+repository: https://github.com/zzzgydi/easy_dsl
+homepage: https://github.com/zzzgydi/easy_dsl
+topics:
+  - dsl
+  - tailwind
+  - build-runner
+  - codegen
 
 environment:
   sdk: ^3.2.3
