@@ -1,12 +1,16 @@
+import 'package:dart_style/dart_style.dart';
+
 import 'cls_item.dart';
 import 'widget_generator.dart';
 
 class ClsGenerator {
-  const ClsGenerator({
+  ClsGenerator({
     required this.items,
   });
 
   final List<ClsItem> items;
+
+  final formatter = DartFormatter();
 
   String generate() {
     final taskMap = <String, List<ClsItem>>{};
@@ -37,7 +41,8 @@ class ClsGenerator {
 
     final widgetCode = widgetList.join("\n\n");
 
-    return "$widgetCode\n\n${_genMapCode(outMap)}\n\n${_genDivCode(constructorList)}";
+    return formatter.format(
+        "$widgetCode\n\n${_genMapCode(outMap)}\n\n${_genDivCode(constructorList)}");
   }
 
   String _genMapCode(Map<String, String> map) {
