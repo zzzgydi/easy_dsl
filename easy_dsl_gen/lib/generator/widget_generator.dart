@@ -8,42 +8,19 @@ class WidgetGenerator {
   final String constructor;
 
   String generate() {
-    final inner = has("flex") && not("flex-col") ? "Row" : "Column";
-    final mainAxisSize = has("inline") || has("inline-block")
-        ? "MainAxisSize.min"
-        : "MainAxisSize.max";
-    final mainAxisAlignment = choose({
-      "justify-center": "MainAxisAlignment.center",
-      "justify-end": "MainAxisAlignment.end",
-      "justify-between": "MainAxisAlignment.spaceBetween",
-      "justify-around": "MainAxisAlignment.spaceAround",
-      "justify-evenly": "MainAxisAlignment.spaceEvenly",
-    }, "MainAxisAlignment.start");
-    final crossAxisAlignment = choose({
-      "items-start": "CrossAxisAlignment.start",
-      "items-end": "CrossAxisAlignment.end",
-      "items-center": "CrossAxisAlignment.center",
-      "items-stretch": "CrossAxisAlignment.stretch",
-      "items-baseline": "CrossAxisAlignment.baseline",
-    }, "CrossAxisAlignment.start");
-
-    var widget = "$inner(\n"
-        "  mainAxisSize: $mainAxisSize,\n"
-        "  mainAxisAlignment: $mainAxisAlignment,\n"
-        "  crossAxisAlignment: $crossAxisAlignment,\n"
-        "  children: children,\n"
-        ")";
-
-    var bgIter = BackgroundIter();
-    var borderIter = BorderIter();
-    var paddingIter = PaddingIter();
+    final boxIter = BoxIter();
+    final bgIter = BackgroundIter();
+    final borderIter = BorderIter();
+    final paddingIter = PaddingIter();
 
     for (var cls in clsItem.clsSet) {
+      boxIter.iter(cls);
       bgIter.iter(cls);
       borderIter.iter(cls);
       paddingIter.iter(cls);
     }
 
+    var widget = boxIter.generate();
     final background = bgIter.generate();
     final border = borderIter.generate();
     final padding = paddingIter.generate();
@@ -51,8 +28,6 @@ class WidgetGenerator {
     if (background != null || border != null || padding != null) {
       final o = StringBuffer();
       o.writeln("Container(");
-      // o.writeln("width: double.infinity,");
-      // o.writeln("height: double.infinity,");
       if (padding != null) {
         o.writeln("padding: $padding,");
       }
@@ -79,21 +54,21 @@ class WidgetGenerator {
         "}";
   }
 
-  bool has(String cls) {
-    return clsItem.clsSet.contains(cls);
-  }
+  // bool has(String cls) {
+  //   return clsItem.clsSet.contains(cls);
+  // }
 
-  bool not(String cls) {
-    return !clsItem.clsSet.contains(cls);
-  }
+  // bool not(String cls) {
+  //   return !clsItem.clsSet.contains(cls);
+  // }
 
-  String choose(Map<String, String> map, String defaultValue) {
-    var out = defaultValue;
-    for (var key in map.keys) {
-      if (clsItem.clsSet.contains(key)) {
-        out = map[key]!;
-      }
-    }
-    return out;
-  }
+  // String choose(Map<String, String> map, String defaultValue) {
+  //   var out = defaultValue;
+  //   for (var key in map.keys) {
+  //     if (clsItem.clsSet.contains(key)) {
+  //       out = map[key]!;
+  //     }
+  //   }
+  //   return out;
+  // }
 }
