@@ -1,7 +1,5 @@
 name: example
-description: "A new Flutter project."
-# The following line prevents the package from being accidentally published to
-# pub.dev using `flutter pub publish`. This is preferred for private packages.
+description: A example and test demo for easy_dsl
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
@@ -13,8 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  easy_dsl:
-    path: ../easy_dsl/
+  easy_dsl: any
 
 dev_dependencies:
   flutter_test:
