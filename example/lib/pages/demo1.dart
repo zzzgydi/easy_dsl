@@ -22,11 +22,11 @@ class Demo1Page extends StatelessWidget {
           className: "flex items-center demo1",
           children: [
             Div(
-              className: "text demo1",
+              className: "p-10 bg-red-500 pt-[100]",
               children: [
                 const Text("test"),
                 const Div(
-                  className: "demo1 flex inline items-center",
+                  className: "flex inline items-center border-2 border-red-500",
                   children: [Text("test")],
                 ),
                 const Div(
