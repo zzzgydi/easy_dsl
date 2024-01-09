@@ -1,3 +1,7 @@
+# 0.0.3
+
+- fix hot reload not works
+
 # 0.0.2
 
 - support `Row`, `Column` and `Stack`
