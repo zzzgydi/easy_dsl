@@ -7,33 +7,28 @@ class Demo1Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const className = "items-center bg-black/50";
+    const className = "items-center bg-black/50 w-full justify-center";
 
     return const Div(
       className: className,
       children: [
         Div(
-          className: "bg-red-500 pt-[10] px-[100] py-[20] gap-4",
+          className: "bg-red-500 px-[100] py-[50] gap-4 rounded-2xl",
           children: [
             Div(
               className:
-                  "px-10 bg-gray-400 w-[200] h-20 flex items-center gap-[4] rounded-tl-[20] rounded-br-[20]",
-              children: [
-                Text('This is'),
-                Text('EasyDSL'),
-              ],
+                  "bg-gray-400 w-[200] h-20 flex items-center justify-center gap-[4] rounded-tl-[20] rounded-br-[20]",
+              children: [Text('This is'), Text('EasyDSL')],
             ),
             Div(
-              className: "flex items-center p-[10] bg-gray-500/50",
+              className: "max-w-[200] flex items-center p-[10] bg-gray-500/50",
               children: [
                 Text('Hello'),
                 SizedBox(width: 10),
                 Div(
                   className:
-                      "bg-orange-100/50 p-2 border-x-[10] border-red-500",
-                  children: [
-                    Text('World'),
-                  ],
+                      "bg-orange-100/50 p-2 border-x-[10] border-red-500 rounded-[10]",
+                  children: [Text('World')],
                 )
               ],
             ),
