@@ -38,20 +38,13 @@ class WidgetGenerator {
       ..add("padding", paddingIter.generate())
       ..add("width", sizeIter.width)
       ..add("height", sizeIter.height)
+      ..add("constraints", sizeIter.genConstraints())
       ..add(
           "decoration",
           (CodeConstrutor("BoxDecoration")
                 ..add("color", bgIter.generate())
                 ..add("border", borderIter.generate())
                 ..add("borderRadius", roundedIter.generate()))
-              .maybeGenerate())
-      ..add(
-          "constraints",
-          (CodeConstrutor("BoxConstraints")
-                ..add("maxWidth", sizeIter.maxWidth)
-                ..add("maxHeight", sizeIter.maxHeight)
-                ..add("minWidth", sizeIter.minWidth)
-                ..add("minHeight", sizeIter.minHeight))
               .maybeGenerate());
 
     if (container.hasFields()) {

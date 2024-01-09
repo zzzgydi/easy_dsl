@@ -1,4 +1,5 @@
 import 'attr.dart';
+import '../code/code_gen.dart';
 
 final wPattern = RegExp(r'^w-(\[\d+(?:\.\d+)\]|.+)$');
 final hPattern = RegExp(r'^h-(\[\d+(?:\.\d+)\]|.+)$');
@@ -17,36 +18,42 @@ class SizeIter extends AttrIter {
       final value = wPattern.firstMatch(cls)?.group(1);
       if (value == null) return;
       width = parseValue(value);
+      return;
     }
 
     if (hPattern.hasMatch(cls)) {
       final value = hPattern.firstMatch(cls)?.group(1);
       if (value == null) return;
       height = parseValue(value);
+      return;
     }
 
     if (maxWidthPattern.hasMatch(cls)) {
       final value = maxWidthPattern.firstMatch(cls)?.group(1);
       if (value == null) return;
       maxWidth = parseValue(value);
+      return;
     }
 
     if (maxHeightPattern.hasMatch(cls)) {
       final value = maxHeightPattern.firstMatch(cls)?.group(1);
       if (value == null) return;
       maxHeight = parseValue(value);
+      return;
     }
 
     if (minWidthPattern.hasMatch(cls)) {
       final value = minWidthPattern.firstMatch(cls)?.group(1);
       if (value == null) return;
       minWidth = parseValue(value);
+      return;
     }
 
     if (minHeightPattern.hasMatch(cls)) {
       final value = minHeightPattern.firstMatch(cls)?.group(1);
       if (value == null) return;
       minHeight = parseValue(value);
+      return;
     }
   }
 
@@ -59,8 +66,12 @@ class SizeIter extends AttrIter {
     return "spacingOr('$value')";
   }
 
-  @override
-  String? generate() {
-    throw UnimplementedError();
+  String? genConstraints() {
+    return (CodeConstrutor("BoxConstraints")
+          ..add("maxWidth", maxWidth)
+          ..add("maxHeight", maxHeight)
+          ..add("minWidth", minWidth)
+          ..add("minHeight", minHeight))
+        .maybeGenerate();
   }
 }
