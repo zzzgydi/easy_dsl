@@ -1,4 +1,14 @@
+import 'package:easy_dsl_gen/generator/code/code_gen.dart';
+
 import 'attr.dart';
+import 'utils.dart';
+
+final widthPattern =
+    RegExp(r'^border(-[tlrbxy])?(?:-(\d+|\[\d+(?:\.\d+)?\]))?$');
+final stylePattern =
+    RegExp(r'^border(-[tlrbxy])?-(solid|none|dashed|dotted|double)$');
+final colorPattern =
+    RegExp(r'^border(-[tlrbxy])?-(\[.+?\]|.+?)(?:/(\[\.\d+\]|\d+))?$');
 
 class BorderIter extends AttrIter {
   String? tColor, tWidth, tStyle;
@@ -8,11 +18,13 @@ class BorderIter extends AttrIter {
 
   @override
   void iter(String cls) {
-    final pattern = RegExp(r'^border(-[tlrbxy])?(-\d+)?$');
-    if (pattern.hasMatch(cls)) {
-      final match = pattern.firstMatch(cls)!;
+    if (widthPattern.hasMatch(cls)) {
+      final match = widthPattern.firstMatch(cls)!;
       final side = match.group(1);
-      final width = (match.group(2) ?? "1").replaceFirst("-", '');
+      var width = (match.group(2) ?? "1");
+      if (width.startsWith('[') && width.endsWith(']')) {
+        width = width.substring(1, width.length - 1);
+      }
       switch (side) {
         case "-t":
           tWidth = width;
@@ -44,16 +56,13 @@ class BorderIter extends AttrIter {
       return;
     }
 
-    final pattern2 =
-        RegExp(r'^border(-[tlrbxy])?-(solid|none|dashed|dotted|double)$');
-    if (pattern2.hasMatch(cls)) {
-      final match = pattern2.firstMatch(cls)!;
+    if (stylePattern.hasMatch(cls)) {
+      final match = stylePattern.firstMatch(cls)!;
       final side = match.group(1);
       var style = match.group(2) ?? "solid";
       if (style != "none") {
         style = "solid";
       }
-
       switch (side) {
         case "-t":
           tStyle = "BorderStyle.$style";
@@ -85,42 +94,41 @@ class BorderIter extends AttrIter {
       return;
     }
 
-    final pattern3 = RegExp(r'^border(-[tlrbxy])?-(\[.+?\]|.+)$');
-    if (pattern3.hasMatch(cls)) {
-      final match = pattern3.firstMatch(cls)!;
+    if (colorPattern.hasMatch(cls)) {
+      final match = colorPattern.firstMatch(cls)!;
       final side = match.group(1);
-      final color = match.group(2) ?? "current";
-      // TODO tranform colorV
-      final cValue = (color.startsWith('[') && color.endsWith(']'))
-          ? "colorV('$color')"
-          : "color('$color')";
+      final color = match.group(2);
+      final alpha = match.group(3);
+
+      final value = parseColor(color, alpha);
+      if (value == null) return;
 
       switch (side) {
         case "-t":
-          tColor = cValue;
+          tColor = value;
           break;
         case "-l":
-          lColor = cValue;
+          lColor = value;
           break;
         case "-r":
-          rColor = cValue;
+          rColor = value;
           break;
         case "-b":
-          bColor = cValue;
+          bColor = value;
           break;
         case "-x":
-          lColor = cValue;
-          rColor = cValue;
+          lColor = value;
+          rColor = value;
           break;
         case "-y":
-          tColor = cValue;
-          bColor = cValue;
+          tColor = value;
+          bColor = value;
           break;
         default:
-          tColor = cValue;
-          lColor = cValue;
-          rColor = cValue;
-          bColor = cValue;
+          tColor = value;
+          lColor = value;
+          rColor = value;
+          bColor = value;
           break;
       }
       return;
@@ -135,36 +143,40 @@ class BorderIter extends AttrIter {
       return null;
     }
 
-    final List<String> sides = [];
-    if (tWidth != null) {
-      tColor ??= "color('current')";
-      tWidth ??= "1";
-      tStyle ??= "BorderStyle.solid";
-      sides.add(
-          "top: BorderSide(color: $tColor, width: $tWidth, style: $tStyle),\n");
-    }
-    if (lWidth != null) {
-      lColor ??= "color('current')";
-      lWidth ??= "1";
-      lStyle ??= "BorderStyle.solid";
-      sides.add(
-          "left: BorderSide(color: $lColor, width: $lWidth, style: $lStyle),\n");
-    }
-    if (rWidth != null) {
-      rColor ??= "color('current')";
-      rWidth ??= "1";
-      rStyle ??= "BorderStyle.solid";
-      sides.add(
-          "right: BorderSide(color: $rColor, width: $rWidth, style: $rStyle),\n");
-    }
-    if (bWidth != null) {
-      bColor ??= "color('current')";
-      bWidth ??= "1";
-      bStyle ??= "BorderStyle.solid";
-      sides.add(
-          "bottom: BorderSide(color: $bColor, width: $bWidth, style: $bStyle),\n");
-    }
+    final top = tWidth != null
+        ? (CodeConstrutor("BorderSide")
+              ..add("color", tColor)
+              ..add("width", tWidth)
+              ..add("style", tStyle))
+            .maybeGenerate()
+        : null;
+    final left = lWidth != null
+        ? (CodeConstrutor("BorderSide")
+              ..add("color", lColor)
+              ..add("width", lWidth)
+              ..add("style", lStyle))
+            .maybeGenerate()
+        : null;
+    final right = rWidth != null
+        ? (CodeConstrutor("BorderSide")
+              ..add("color", rColor)
+              ..add("width", rWidth)
+              ..add("style", rStyle))
+            .maybeGenerate()
+        : null;
+    final bottom = bWidth != null
+        ? (CodeConstrutor("BorderSide")
+              ..add("color", bColor)
+              ..add("width", bWidth)
+              ..add("style", bStyle))
+            .maybeGenerate()
+        : null;
 
-    return "Border(${sides.join()})";
+    return (CodeConstrutor("Border")
+          ..add("top", top)
+          ..add("left", left)
+          ..add("right", right)
+          ..add("bottom", bottom))
+        .generate();
   }
 }
