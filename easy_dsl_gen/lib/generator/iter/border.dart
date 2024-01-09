@@ -3,11 +3,11 @@ import 'package:easy_dsl_gen/generator/code/code_gen.dart';
 import 'attr.dart';
 import 'utils.dart';
 
-final widthPattern =
+final borderWidthPattern =
     RegExp(r'^border(-[tlrbxy])?(?:-(\d+|\[\d+(?:\.\d+)?\]))?$');
-final stylePattern =
+final borderStylePattern =
     RegExp(r'^border(-[tlrbxy])?-(solid|none|dashed|dotted|double)$');
-final colorPattern =
+final borderColorPattern =
     RegExp(r'^border(-[tlrbxy])?-(\[.+?\]|.+?)(?:/(\[\.\d+\]|\d+))?$');
 
 class BorderIter extends AttrIter {
@@ -18,8 +18,8 @@ class BorderIter extends AttrIter {
 
   @override
   void iter(String cls) {
-    if (widthPattern.hasMatch(cls)) {
-      final match = widthPattern.firstMatch(cls)!;
+    if (borderWidthPattern.hasMatch(cls)) {
+      final match = borderWidthPattern.firstMatch(cls)!;
       final side = match.group(1);
       var width = (match.group(2) ?? "1");
       if (width.startsWith('[') && width.endsWith(']')) {
@@ -56,8 +56,8 @@ class BorderIter extends AttrIter {
       return;
     }
 
-    if (stylePattern.hasMatch(cls)) {
-      final match = stylePattern.firstMatch(cls)!;
+    if (borderStylePattern.hasMatch(cls)) {
+      final match = borderStylePattern.firstMatch(cls)!;
       final side = match.group(1);
       var style = match.group(2) ?? "solid";
       if (style != "none") {
@@ -94,8 +94,8 @@ class BorderIter extends AttrIter {
       return;
     }
 
-    if (colorPattern.hasMatch(cls)) {
-      final match = colorPattern.firstMatch(cls)!;
+    if (borderColorPattern.hasMatch(cls)) {
+      final match = borderColorPattern.firstMatch(cls)!;
       final side = match.group(1);
       final color = match.group(2);
       final alpha = match.group(3);
