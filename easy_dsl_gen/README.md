@@ -18,8 +18,11 @@ Add these dependencies to `pubspec.yaml`.
 
 ```yaml
 dependencies:
-  easy_dsl: ^0.0.1
-  easy_dsl_gen: ^0.0.1
+  easy_dsl: latest
+
+dev_dependencies:
+  build_runner: ^2.4.0
+  easy_dsl_gen: latest
 ```
 
 ## Usage
@@ -81,6 +84,20 @@ Widget build(BuildContext context) {
 ```
 
 **Note:** The value of `className` must be a string literal or a constant to be resolved at compile time.
+
+## Running the code generator
+
+Once you have modified the code related to EasyDSL, you should execute the following command to generate the missing `.easy.g.dart` generated dart files.
+
+```bash
+dart run build_runner build
+```
+
+Alternatively, you can execute the following command to continuously monitor file changes.
+
+```bash
+dart run build_runner watch
+```
 
 ## Contributing
 
