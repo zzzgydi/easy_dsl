@@ -15,6 +15,7 @@ class WidgetGenerator {
     final borderIter = BorderIter();
     final paddingIter = PaddingIter();
     final marginIter = MarginIter();
+    final roundedIter = RoundedIter();
 
     for (var cls in clsItem.clsSet) {
       boxIter.iter(cls);
@@ -23,25 +24,22 @@ class WidgetGenerator {
       borderIter.iter(cls);
       paddingIter.iter(cls);
       marginIter.iter(cls);
+      roundedIter.iter(cls);
     }
 
     var current = boxIter.generate();
 
-    final background = bgIter.generate();
-    final border = borderIter.generate();
-    final padding = paddingIter.generate();
-    final margin = marginIter.generate();
-
     final container = CodeConstrutor("Container")
-      ..add("margin", margin)
-      ..add("padding", padding)
+      ..add("margin", marginIter.generate())
+      ..add("padding", paddingIter.generate())
       ..add("width", sizeIter.width)
       ..add("height", sizeIter.height)
       ..add(
           "decoration",
           (CodeConstrutor("BoxDecoration")
-                ..add("color", background)
-                ..add("border", border))
+                ..add("color", bgIter.generate())
+                ..add("border", borderIter.generate())
+                ..add("borderRadius", roundedIter.generate()))
               .maybeGenerate())
       ..add(
           "constraints",

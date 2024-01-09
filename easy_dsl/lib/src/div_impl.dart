@@ -25,6 +25,10 @@ class EasyDivImpl extends StatelessWidget {
     return option.color[key] ?? Colors.transparent;
   }
 
+  double rounded(String key) {
+    return option.borderRadius[key] ?? 0;
+  }
+
   List<Widget> joinSpacer(List<Widget> children, Widget spacer) {
     final result = <Widget>[];
     for (var i = 0; i < children.length; i++) {

@@ -17,7 +17,7 @@ class Demo1Page extends StatelessWidget {
           children: [
             Div(
               className:
-                  "px-10 bg-gray-400 w-[200] h-20 flex items-center gap-[4]",
+                  "px-10 bg-gray-400 w-[200] h-20 flex items-center gap-[4] rounded-tl-[20] rounded-br-[20]",
               children: [
                 Text('This is'),
                 Text('EasyDSL'),

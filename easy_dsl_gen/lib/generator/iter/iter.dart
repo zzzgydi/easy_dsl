@@ -5,5 +5,6 @@ export 'border.dart';
 export 'padding.dart';
 export 'margin.dart';
 export 'size.dart';
+export 'rounded.dart';
 // export 'text.dart';
 // export 'text_style.dart';
