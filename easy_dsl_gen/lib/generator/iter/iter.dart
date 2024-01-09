@@ -7,5 +7,6 @@ export 'margin.dart';
 export 'size.dart';
 export 'rounded.dart';
 export 'aspect.dart';
+export 'opacity.dart';
 // export 'text.dart';
 // export 'text_style.dart';

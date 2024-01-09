@@ -17,6 +17,7 @@ class WidgetGenerator {
     final marginIter = MarginIter();
     final roundedIter = RoundedIter();
     final aspectIter = AspectIter();
+    final opacityIter = OpacityIter();
 
     for (var cls in clsItem.clsSet) {
       boxIter.iter(cls);
@@ -27,6 +28,7 @@ class WidgetGenerator {
       marginIter.iter(cls);
       roundedIter.iter(cls);
       aspectIter.iter(cls);
+      opacityIter.iter(cls);
     }
 
     var current = boxIter.generate();
@@ -58,6 +60,7 @@ class WidgetGenerator {
     }
 
     current = aspectIter.wrapper(current);
+    current = opacityIter.wrapper(current);
 
     return "class $constructor extends EasyDivImpl {\n"
         "  const $constructor({\n"
