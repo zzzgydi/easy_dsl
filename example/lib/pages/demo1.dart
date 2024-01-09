@@ -7,7 +7,7 @@ class Demo1Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const className = "items-center bg-black";
+    const className = "items-center bg-black/50";
 
     return const Div(
       className: className,
@@ -24,12 +24,13 @@ class Demo1Page extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Div(
-              className: "flex items-center p-[10] bg-gray-500",
+              className: "flex items-center p-[10] bg-gray-500/50",
               children: [
                 Text('Hello'),
                 SizedBox(width: 10),
                 Div(
-                  className: "bg-orange-100 p-2 border-x-3 border-red-500",
+                  className:
+                      "bg-orange-100/50 p-2 border-x-[10] border-red-500",
                   children: [
                     Text('World'),
                   ],
