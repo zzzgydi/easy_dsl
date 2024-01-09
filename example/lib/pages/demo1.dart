@@ -13,16 +13,16 @@ class Demo1Page extends StatelessWidget {
       className: className,
       children: [
         Div(
-          className: "bg-red-500 pt-[10] px-[100] py-[20]",
+          className: "bg-red-500 pt-[10] px-[100] py-[20] gap-4",
           children: [
             Div(
-              className: "p-10 bg-gray-400",
+              className:
+                  "px-10 bg-gray-400 w-[200] h-20 flex items-center gap-[4]",
               children: [
                 Text('This is'),
                 Text('EasyDSL'),
               ],
             ),
-            SizedBox(height: 20),
             Div(
               className: "flex items-center p-[10] bg-gray-500/50",
               children: [

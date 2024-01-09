@@ -1,6 +1,9 @@
 import 'attr.dart';
 import '../code/code_gen.dart';
 
+final spacePattern = RegExp(r'^space(-x|y)?-(\[\d+(?:\.\d+)\]|.+)$');
+final gapPattern = RegExp(r'^gap(-x|y)?-(\[\d+(?:\.\d+)\]|.+)$');
+
 class BoxIter extends AttrIter {
   String _box = "Column";
   final _set = <String>{};
@@ -12,6 +15,8 @@ class BoxIter extends AttrIter {
   String _stackFit = "StackFit.loose";
   String _stackClip = "Clip.hardEdge";
   String? _stackDirection;
+
+  String? _gapX, _gapY;
 
   @override
   void iter(String cls) {
@@ -124,6 +129,35 @@ class BoxIter extends AttrIter {
         _stackAlign = "AlignmentDirectional.bottomEnd";
         break;
       default:
+        if (spacePattern.hasMatch(cls)) {
+          final match = spacePattern.firstMatch(cls)!;
+          final axis = match.group(1);
+          final value = match.group(2);
+          if (value == null) return;
+
+          if (axis == "-x") {
+            _gapX = parseValue(value);
+          } else if (axis == "-y") {
+            _gapY = parseValue(value);
+          } else {
+            _gapX = parseValue(value);
+            _gapY = _gapX;
+          }
+        } else if (gapPattern.hasMatch(cls)) {
+          final match = gapPattern.firstMatch(cls)!;
+          final axis = match.group(1);
+          final value = match.group(2);
+          if (value == null) return;
+
+          if (axis == "-x") {
+            _gapX = parseValue(value);
+          } else if (axis == "-y") {
+            _gapY = parseValue(value);
+          } else {
+            _gapX = parseValue(value);
+            _gapY = _gapX;
+          }
+        }
         break;
     }
   }
@@ -140,11 +174,26 @@ class BoxIter extends AttrIter {
           .generate();
     }
 
-    return (CodeConstrutor(_box)
-          ..add("mainAxisSize", _size)
-          ..add("mainAxisAlignment", _align)
-          ..add("crossAxisAlignment", _cross)
-          ..add("children", "children"))
-        .generate();
+    final flex = CodeConstrutor(_box)
+      ..add("mainAxisSize", _size)
+      ..add("mainAxisAlignment", _align)
+      ..add("crossAxisAlignment", _cross);
+
+    if (_gapX != null && _box == "Row") {
+      flex.add("children", "joinSpacer(children, SizedBox(width: $_gapX))");
+    } else if (_gapY != null && _box == "Column") {
+      flex.add("children", "joinSpacer(children, SizedBox(height: $_gapY))");
+    } else {
+      flex.add("children", "children");
+    }
+
+    return flex.generate();
+  }
+
+  String? parseValue(String value) {
+    if (value.startsWith("[") && value.endsWith("]")) {
+      return value.substring(1, value.length - 1);
+    }
+    return "spacing('$value')";
   }
 }
