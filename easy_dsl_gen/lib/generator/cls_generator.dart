@@ -51,8 +51,8 @@ class ClsGenerator {
 
     output.writeln("part of '$partOfUri';\n");
 
-    output.writeln(_genMapCode(outMap));
-    output.writeln(_genDivCode(constructorList));
+    // output.writeln(_genMapCode(outMap));
+    output.writeln(_genDivCode(constructorList, outMap));
     output.writeln(widgetCode);
 
     return formatter.format(output.toString());
@@ -61,7 +61,7 @@ class ClsGenerator {
   String _genMapCode(Map<String, String> map) {
     final buffer = StringBuffer();
     buffer.writeln(
-        "final _divMap = <String, Widget Function(String, EasyOption, List<Widget>)>{");
+        "final divMap = <String, Widget Function(String, EasyOption, List<Widget>)>{");
     map.forEach((key, value) {
       buffer.writeln(
           "  \"$key\": (cls, o, c) => $value(className: cls, option: o, children: c),");
@@ -70,7 +70,7 @@ class ClsGenerator {
     return buffer.toString();
   }
 
-  String _genDivCode(List<String> constructorList) {
+  String _genDivCode(List<String> constructorList, Map<String, String> map) {
     return "class \$Div extends StatelessWidget {\n"
         "  const \$Div({\n"
         "   super.key, required this.className, required this.children,\n"
@@ -81,7 +81,8 @@ class ClsGenerator {
         "  final List<Widget> children;\n\n"
         "  @override\n"
         "  Widget build(BuildContext context) {\n"
-        "    final creator = _divMap[className.trim()];\n"
+        "    ${_genMapCode(map)}\n"
+        "    final creator = divMap[className.trim()];\n"
         "    return creator != null ? creator(className, option, children) : Column(children: children);\n"
         "  }\n"
         "}\n";
