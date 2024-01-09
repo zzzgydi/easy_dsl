@@ -23,4 +23,14 @@ class EasyOption {
         spacing = defaultSpacing,
         aspectRatio = defaultAspectRatio,
         borderRadius = defaultBorderRadius;
+
+  EasyOption.extend({
+    Map<String, double>? extendSpacing,
+    Map<String, double>? extendBorderRadius,
+    Map<String, double>? extendAspectRatio,
+    Map<String, Color>? extendColor,
+  })  : spacing = {...defaultSpacing, ...?extendSpacing},
+        borderRadius = {...defaultBorderRadius, ...?extendBorderRadius},
+        aspectRatio = {...defaultAspectRatio, ...?extendAspectRatio},
+        color = {...defaultColor, ...?extendColor};
 }
