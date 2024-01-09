@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'options.dart';
@@ -27,6 +28,15 @@ class EasyDivImpl extends StatelessWidget {
 
   double rounded(String key) {
     return option.borderRadius[key] ?? 0;
+  }
+
+  double aspectRatio(String key) {
+    final v = option.aspectRatio[key];
+    if (kDebugMode && v == null) {
+      print(
+          "[EasyDSL] Warning: `aspect-$key` not set, please check your option.");
+    }
+    return v ?? 1;
   }
 
   List<Widget> joinSpacer(List<Widget> children, Widget spacer) {

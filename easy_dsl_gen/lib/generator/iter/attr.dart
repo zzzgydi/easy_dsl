@@ -1,4 +1,11 @@
 abstract class AttrIter {
   void iter(String cls);
-  String? generate();
+
+  String? generate() {
+    throw UnimplementedError();
+  }
+
+  String? wrapper(String? child) {
+    throw UnimplementedError();
+  }
 }

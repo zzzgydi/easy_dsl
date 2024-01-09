@@ -50,6 +50,11 @@ const defaultBorderRadius = <String, double>{
   "default": 4,
 };
 
+const defaultAspectRatio = <String, double>{
+  "square": 1,
+  "video": 16 / 9,
+};
+
 // default color from https://github.com/tailwindlabs/tailwindcss/blob/master/src/public/colors.js
 const defaultColor = <String, Color>{
   "transparent": Color(0x00000000),

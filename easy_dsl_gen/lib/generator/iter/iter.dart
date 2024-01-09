@@ -6,5 +6,6 @@ export 'padding.dart';
 export 'margin.dart';
 export 'size.dart';
 export 'rounded.dart';
+export 'aspect.dart';
 // export 'text.dart';
 // export 'text_style.dart';
