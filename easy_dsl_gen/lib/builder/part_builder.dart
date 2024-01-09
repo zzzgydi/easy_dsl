@@ -59,6 +59,9 @@ class EasyPartBuilder implements Builder {
       }
     }
 
-    await buildStep.writeAsString(outputId, output.toString());
+    final out = output.toString();
+    if (out.isNotEmpty) {
+      await buildStep.writeAsString(outputId, out);
+    }
   }
 }
