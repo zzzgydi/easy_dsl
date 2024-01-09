@@ -21,7 +21,7 @@ void main() {
       if (width.startsWith('[') && width.endsWith(']')) {
         w = width.substring(1, width.length - 1);
       }
-      print("src: $cls \n== mode: width \n== side: $side \n== width: $width");
+      print("src: $cls \n== mode: width \n== side: $side \n== width: $w");
     }
     // color
     else if (colorPattern.hasMatch(cls)) {
