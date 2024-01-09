@@ -10,6 +10,7 @@ class WidgetGenerator {
 
   String generate() {
     final boxIter = BoxIter();
+    final sizeIter = SizeIter();
     final bgIter = BackgroundIter();
     final borderIter = BorderIter();
     final paddingIter = PaddingIter();
@@ -17,6 +18,7 @@ class WidgetGenerator {
 
     for (var cls in clsItem.clsSet) {
       boxIter.iter(cls);
+      sizeIter.iter(cls);
       bgIter.iter(cls);
       borderIter.iter(cls);
       paddingIter.iter(cls);
@@ -33,11 +35,21 @@ class WidgetGenerator {
     final container = CodeConstrutor("Container")
       ..add("margin", margin)
       ..add("padding", padding)
+      ..add("width", sizeIter.width)
+      ..add("height", sizeIter.height)
       ..add(
           "decoration",
           (CodeConstrutor("BoxDecoration")
                 ..add("color", background)
                 ..add("border", border))
+              .maybeGenerate())
+      ..add(
+          "constraints",
+          (CodeConstrutor("BoxConstraints")
+                ..add("maxWidth", sizeIter.maxWidth)
+                ..add("maxHeight", sizeIter.maxHeight)
+                ..add("minWidth", sizeIter.minWidth)
+                ..add("minHeight", sizeIter.minHeight))
               .maybeGenerate());
 
     if (container.hasFields()) {

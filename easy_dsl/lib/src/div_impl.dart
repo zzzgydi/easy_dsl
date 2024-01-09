@@ -17,13 +17,23 @@ class EasyDivImpl extends StatelessWidget {
     return option.spacing[key] ?? 0;
   }
 
+  double? spacingOr(String key) {
+    return option.spacing[key];
+  }
+
   Color color(String key) {
     return option.color[key] ?? Colors.transparent;
   }
 
-  // TODO
-  Color colorV(String value) {
-    return Colors.black;
+  List<Widget> joinSpacer(List<Widget> children, Widget spacer) {
+    final result = <Widget>[];
+    for (var i = 0; i < children.length; i++) {
+      result.add(children[i]);
+      if (i < children.length - 1) {
+        result.add(spacer);
+      }
+    }
+    return result;
   }
 
   @override
