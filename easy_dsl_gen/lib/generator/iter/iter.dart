@@ -8,5 +8,6 @@ export 'size.dart';
 export 'rounded.dart';
 export 'aspect.dart';
 export 'opacity.dart';
+export 'safearea.dart';
 // export 'text.dart';
 // export 'text_style.dart';
