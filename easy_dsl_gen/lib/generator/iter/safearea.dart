@@ -15,7 +15,7 @@ class SafeAreaIter extends AttrIter {
   void iter(String cls) {
     if (safePattern.hasMatch(cls)) {
       final match = safePattern.firstMatch(cls)!;
-      final safe = match.group(1) ?? "inner";
+      final safe = match.group(1) ?? "outer";
       final dir = match.group(2);
 
       if (safe == "inner") {
