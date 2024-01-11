@@ -53,15 +53,15 @@ class ClsGenerator {
 
     // output.writeln(_genMapCode(outMap));
     output.writeln(_genDivCode(constructorList, outMap));
+    // output.writeln(_genConstCode());
     output.writeln(widgetCode);
-
     return formatter.format(output.toString());
   }
 
   String _genMapCode(Map<String, String> map) {
     final buffer = StringBuffer();
     buffer.writeln(
-        "final divMap = <String, Widget Function(String, EasyOption, List<Widget>)>{");
+        "final divMap = <String, Widget Function(String, EasyOption, List<Widget>?)>{");
     map.forEach((key, value) {
       buffer.writeln(
           "  \"$key\": (cls, o, c) => $value(className: cls, option: o, children: c),");
@@ -73,18 +73,35 @@ class ClsGenerator {
   String _genDivCode(List<String> constructorList, Map<String, String> map) {
     return "class \$Div extends StatelessWidget {\n"
         "  const \$Div({\n"
-        "   super.key, required this.className, required this.children,\n"
+        "   super.key, required this.className, this.children,\n"
         "   this.option = const EasyOption.empty(),\n"
         "  });\n"
         "  final String className;\n"
         "  final EasyOption option;\n"
-        "  final List<Widget> children;\n\n"
+        "  final List<Widget>? children;\n\n"
         "  @override\n"
         "  Widget build(BuildContext context) {\n"
         "    ${_genMapCode(map)}\n"
-        "    final creator = divMap[className.trim()];\n"
-        "    return creator != null ? creator(className, option, children) : Column(children: children);\n"
+        "    var creator = divMap[className.trim()];\n"
+        "    ${_genDebugCode()}\n"
+        "    return creator != null ? creator(className, option, children) : (children?.length ?? 0) > 0 ? Column(children: children!) : const SizedBox();\n"
         "  }\n"
         "}\n";
+  }
+
+  String _genDebugCode() {
+    return """
+if (kDebugMode) {
+  var clsList = className.split(" ").map((e) => e.trim()).toList();
+  for (var e in divMap.entries) {
+    var l = e.key.split(" ").map((e) => e.trim()).toList();
+    var d = easyEditDistance(clsList, l);
+    if ((d <= 1 && l.length > 2) || (d <= 3 && l.length > 8)) {
+      creator = e.value;
+      break;
+    }
+  }
+}
+""";
   }
 }

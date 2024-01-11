@@ -184,7 +184,7 @@ class BoxIter extends AttrIter {
     } else if (_gapY != null && _box == "Column") {
       flex.add("children", "joinSpacer(children, SizedBox(height: $_gapY))");
     } else {
-      flex.add("children", "children");
+      flex.add("children", "children!");
     }
 
     return flex.generate();

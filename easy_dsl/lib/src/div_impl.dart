@@ -7,12 +7,12 @@ class EasyDivImpl extends StatelessWidget {
   const EasyDivImpl({
     super.key,
     required this.className,
-    required this.children,
     required this.option,
+    this.children,
   });
   final String className;
   final EasyOption option;
-  final List<Widget> children;
+  final List<Widget>? children;
 
   double spacing(String key) {
     return option.spacing[key] ?? 0;
@@ -39,7 +39,10 @@ class EasyDivImpl extends StatelessWidget {
     return v ?? 1;
   }
 
-  List<Widget> joinSpacer(List<Widget> children, Widget spacer) {
+  List<Widget> joinSpacer(List<Widget>? children, Widget spacer) {
+    if (children == null || children.isEmpty) {
+      return const [];
+    }
     final result = <Widget>[];
     for (var i = 0; i < children.length; i++) {
       result.add(children[i]);

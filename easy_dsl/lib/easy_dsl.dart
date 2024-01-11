@@ -7,3 +7,4 @@ export 'annotations.dart';
 export 'src/options.dart';
 export 'src/defaults.dart';
 export 'src/div_impl.dart';
+export 'src/utils.dart';

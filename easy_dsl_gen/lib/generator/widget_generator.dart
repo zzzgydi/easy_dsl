@@ -34,6 +34,7 @@ class WidgetGenerator {
     }
 
     var current = boxIter.generate();
+    current = "(children?.length ?? 0) > 0 ? $current : const SizedBox()";
     current = safeAreaIter.wrapperInner(current);
 
     final container = CodeConstrutor("Container")
