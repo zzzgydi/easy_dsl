@@ -18,6 +18,11 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^2.0.0
   build_runner: ^2.4.0
+  easy_dsl_gen: any
+
+dependency_overrides:
+  easy_dsl:
+    path: ../easy_dsl/
   easy_dsl_gen:
     path: ../easy_dsl_gen/
 
