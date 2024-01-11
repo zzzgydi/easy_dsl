@@ -1,3 +1,9 @@
+# 0.0.4
+
+- support `SafeArea`
+- support children is null
+- optimize hot reload
+
 # 0.0.3
 
 - fix hot reload not works
