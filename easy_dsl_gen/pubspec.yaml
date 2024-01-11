@@ -1,5 +1,5 @@
 name: easy_dsl_gen
-version: 0.0.3
+version: 0.0.4
 description: Streamlining Flutter UI Development with DSL-Based Code Generation
 repository: https://github.com/zzzgydi/easy_dsl
 homepage: https://github.com/zzzgydi/easy_dsl
@@ -20,7 +20,7 @@ dependencies:
   path: ^1.8.0
   code_builder: ^4.9.0
   dart_style: ^2.3.4
-  easy_dsl: ^0.0.3
+  easy_dsl: ^0.0.4
 
 dev_dependencies:
   lints: ^2.1.0
